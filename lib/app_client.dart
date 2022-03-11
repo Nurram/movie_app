@@ -46,4 +46,19 @@ class AppClient {
 
     return movieResponse;
   }
+
+    Future<MovieResponse?> getTopRated(String category) async {
+    MovieResponse? movieResponse;
+
+    try {
+      final response = await _dio.get(
+          '/$category/top_rated?api_key=6dd04502cb6dddf5bb7c93bf6f5174d4&page=1');
+      movieResponse = MovieResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      // ignore: avoid_print
+      print('Error sending request ${e.message}!');
+    }
+
+    return movieResponse;
+  }
 }

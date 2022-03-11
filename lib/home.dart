@@ -118,38 +118,54 @@ class _HomeState extends State<Home> {
                 const SizedBox(
                   height: 16,
                 ),
-                FutureBuilder(
-                    future: _appClient.getTrending(_selected),
-                    builder: ((context, snapshot) {
-                      if (snapshot.hasData) {
-                        MovieResponse data = snapshot.data as MovieResponse;
-
-                        return SizedBox(
-                          height: 270,
-                          child: ListView.builder(
-                            itemCount: data.results.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: ((context, index) =>
-                                _buildListItem(data.results[index])),
-                          ),
-                        );
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else {
-                        return ErrorText(
-                          errrorMsg: snapshot.error.toString(),
-                        );
-                      }
-                    }))
+                _buildListView(true),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  'Top Rated',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                _buildListView(false),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  FutureBuilder<MovieResponse?> _buildListView(bool isTrending) {
+    return FutureBuilder(
+        future: isTrending
+            ? _appClient.getTrending(_selected)
+            : _appClient.getTopRated(_selected),
+        builder: ((context, snapshot) {
+          if (snapshot.hasData) {
+            MovieResponse data = snapshot.data as MovieResponse;
+
+            return SizedBox(
+              height: 270,
+              child: ListView.builder(
+                itemCount: data.results.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: ((context, index) =>
+                    _buildListItem(data.results[index])),
+              ),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return ErrorText(
+              errrorMsg: snapshot.error.toString(),
+            );
+          }
+        }));
   }
 
   SizedBox _buildHeaderItem(ThemeData theme, Result data) {
