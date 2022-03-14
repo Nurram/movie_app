@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/utils/app_client.dart';
+import 'package:movie_app/utils/api_provider.dart';
 import 'package:movie_app/utils/global_style.dart';
 import 'package:movie_app/widgets/error_text.dart';
 
@@ -14,12 +14,12 @@ class MovieDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final apiClient = AppClient();
+    final apiClient = ApiProvider();
 
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder(
-          future: apiClient.getMovieDetail(category, movieId),
+          future: apiClient.getMovieDetail(movieId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               MovieDetailResponse data = snapshot.data as MovieDetailResponse;
