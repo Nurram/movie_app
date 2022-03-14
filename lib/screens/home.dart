@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/app_client.dart';
-import 'package:movie_app/error_text.dart';
-import 'package:movie_app/movie_response.dart';
+import 'package:movie_app/utils/app_client.dart';
+import 'package:movie_app/models/movie_response.dart';
+import 'package:movie_app/utils/global_style.dart';
+import 'package:movie_app/widgets/error_text.dart';
+
+import 'movie_detail.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -37,8 +40,8 @@ class _HomeState extends State<Home> {
                       child: Text(
                         'Series',
                         style: _selected == "tv"
-                            ? _primaryTextButtonColor()
-                            : _whiteTextButtonColor(),
+                            ? GlobalStyle.primaryTextButtonColor(context)
+                            : GlobalStyle.whiteTextButtonColor(),
                       ),
                       onPressed: () {
                         setSelected("tv");
@@ -51,8 +54,8 @@ class _HomeState extends State<Home> {
                       child: Text(
                         "Movie",
                         style: _selected == "movie"
-                            ? _primaryTextButtonColor()
-                            : _whiteTextButtonColor(),
+                            ? GlobalStyle.primaryTextButtonColor(context)
+                            : GlobalStyle.whiteTextButtonColor(),
                       ),
                     ),
                     TextButton(
@@ -62,8 +65,8 @@ class _HomeState extends State<Home> {
                       child: Text(
                         "My List",
                         style: _selected == "list"
-                            ? _primaryTextButtonColor()
-                            : _whiteTextButtonColor(),
+                            ? GlobalStyle.primaryTextButtonColor(context)
+                            : GlobalStyle.whiteTextButtonColor(),
                       ),
                     ),
                   ],
@@ -171,52 +174,44 @@ class _HomeState extends State<Home> {
   SizedBox _buildHeaderItem(ThemeData theme, Result data) {
     return SizedBox(
       width: 325,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) =>
+                MovieDetail(category: _selected, movieId: data.id),
+          ),
         ),
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                "https://image.tmdb.org/t/p/w500${data.backdropPath}",
-                width: MediaQuery.of(context).size.width - 36,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Container(
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                gradient: LinearGradient(
-                    begin: FractionalOffset.bottomCenter,
-                    end: FractionalOffset.topCenter,
-                    colors: [
-                      Colors.grey.withOpacity(0.0),
-                      Colors.black45,
-                    ],
-                    stops: const [
-                      0.0,
-                      1.0
-                    ]),
-              ),
-            ),
-            ListTile(
-              title: Text(
-                data.title,
-                maxLines: 2,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              trailing: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.share,
-                  color: Colors.white,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  "https://image.tmdb.org/t/p/w500${data.backdropPath}",
+                  width: 325,
+                  fit: BoxFit.cover,
                 ),
               ),
-            )
-          ],
+              GlobalStyle.buildGradientTopToBottom(),
+              ListTile(
+                title: Text(
+                  data.title,
+                  maxLines: 2,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                trailing: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.share,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -225,58 +220,58 @@ class _HomeState extends State<Home> {
   SizedBox _buildListItem(Result data) {
     return SizedBox(
       width: 140,
-      child: Card(
-        color: Colors.black87,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) =>
+                MovieDetail(category: _selected, movieId: data.id),
+          ),
         ),
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                "https://image.tmdb.org/t/p/w500${data.posterPath}",
-                width: 140,
-                fit: BoxFit.cover,
+        child: Card(
+          color: Colors.black87,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  "https://image.tmdb.org/t/p/w500${data.posterPath}",
+                  width: 140,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                  size: 14,
-                ),
-                Text(
-                  data.voteAverage.toString(),
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Text(
-              data.title,
-              maxLines: 2,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ],
+              const SizedBox(
+                height: 8,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                    size: 14,
+                  ),
+                  Text(
+                    data.voteAverage.toString(),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                data.title,
+                maxLines: 2,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  TextStyle _primaryTextButtonColor() {
-    return TextStyle(color: Theme.of(context).colorScheme.primary);
-  }
-
-  TextStyle _whiteTextButtonColor() {
-    return const TextStyle(color: Colors.white);
   }
 
   void setSelected(String selected) {

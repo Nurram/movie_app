@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:movie_app/interceptor.dart';
-import 'package:movie_app/movie_response.dart';
+import 'package:movie_app/utils/interceptor.dart';
+import 'package:movie_app/models/movie_detail_response.dart';
+import 'package:movie_app/models/movie_response.dart';
 
 class AppClient {
   final Dio _dio = Dio(
@@ -47,7 +48,7 @@ class AppClient {
     return movieResponse;
   }
 
-    Future<MovieResponse?> getTopRated(String category) async {
+  Future<MovieResponse?> getTopRated(String category) async {
     MovieResponse? movieResponse;
 
     try {
@@ -60,5 +61,21 @@ class AppClient {
     }
 
     return movieResponse;
+  }
+
+  Future<MovieDetailResponse?> getMovieDetail(
+      String category, int movieId) async {
+    MovieDetailResponse? movieDetailResponse;
+
+    try {
+      final response = await _dio.get(
+          '/$category/$movieId?api_key=6dd04502cb6dddf5bb7c93bf6f5174d4&page=1');
+      movieDetailResponse = MovieDetailResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      // ignore: avoid_print
+      print('Error sending request ${e.message}!');
+    }
+
+    return movieDetailResponse;
   }
 }
