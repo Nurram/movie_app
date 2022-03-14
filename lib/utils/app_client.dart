@@ -27,7 +27,7 @@ class AppClient {
       movieResponse = MovieResponse.fromJson(response.data);
     } on DioError catch (e) {
       // ignore: avoid_print
-      print('Error sending request ${e.message}!');
+      throw 'Error sending request ${e.message}!';
     }
 
     return movieResponse;
@@ -42,7 +42,7 @@ class AppClient {
       movieResponse = MovieResponse.fromJson(response.data);
     } on DioError catch (e) {
       // ignore: avoid_print
-      print('Error sending request ${e.message}!');
+      throw 'Error sending request ${e.message}!';
     }
 
     return movieResponse;
@@ -57,7 +57,7 @@ class AppClient {
       movieResponse = MovieResponse.fromJson(response.data);
     } on DioError catch (e) {
       // ignore: avoid_print
-      print('Error sending request ${e.message}!');
+      throw 'Error sending request ${e.message}!';
     }
 
     return movieResponse;
@@ -73,7 +73,7 @@ class AppClient {
       movieDetailResponse = MovieDetailResponse.fromJson(response.data);
     } on DioError catch (e) {
       // ignore: avoid_print
-      print('Error sending request ${e.message}!');
+      throw 'Error sending request ${e.message}!';
     }
 
     return movieDetailResponse;
