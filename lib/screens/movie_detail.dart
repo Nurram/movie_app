@@ -18,6 +18,14 @@ class MovieDetail extends StatefulWidget {
 }
 
 class _MovieDetailState extends State<MovieDetail> {
+  String _category = "";
+
+  @override
+  void initState() {
+    _category = widget.category;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final apiClient = ApiProvider();
@@ -25,7 +33,9 @@ class _MovieDetailState extends State<MovieDetail> {
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder(
-          future: apiClient.getMovieDetail(widget.movieId),
+          future: _category == 'movie'
+              ? apiClient.getMovieDetail(widget.movieId)
+              : apiClient.getTvDetail(widget.movieId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               MovieDetailResponse data = snapshot.data as MovieDetailResponse;
@@ -73,7 +83,7 @@ class _MovieDetailState extends State<MovieDetail> {
   Padding _buildDetailBody(MovieDetailResponse data, BuildContext context) {
     final favouritesBox = Hive.box('favourites');
     final Map<String, dynamic>? savedMovie =
-        favouritesBox.get('${widget.category}${data.id}');
+        favouritesBox.get('$_category${data.id}');
     bool isFavourite = savedMovie == null ? false : true;
 
     return Padding(
@@ -97,15 +107,16 @@ class _MovieDetailState extends State<MovieDetail> {
                   onPressed: () {
                     isFavourite
                         ? {
-                            favouritesBox.delete('${widget.category}${data.id}'),
+                            favouritesBox.delete('$_category${data.id}'),
                             _showSnackbar(
-                              const Text('Success delete movie!'),
+                              Text('Success delete $_category!'),
                             )
                           }
                         : {
-                            favouritesBox.put('${widget.category}${data.id}', data.toJson()),
+                            favouritesBox.put(
+                                '$_category${data.id}', data.toJson()),
                             _showSnackbar(
-                              const Text('Success save movie!'),
+                              Text('Success save $_category!'),
                             )
                           };
 

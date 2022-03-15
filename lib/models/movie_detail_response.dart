@@ -36,7 +36,7 @@ class MovieDetailResponse {
   factory MovieDetailResponse.fromJson(Map<String, dynamic> json) =>
       MovieDetailResponse(
         adult: json["adult"],
-        backdropPath: json["backdrop_path"],
+        backdropPath: json["backdrop_path"] ?? "",
         genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
         id: json["id"],
         originalLanguage: json["original_language"],

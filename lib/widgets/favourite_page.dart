@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:movie_app/models/movie_detail_response.dart';
-import 'package:movie_app/models/movie_response.dart';
 import 'package:movie_app/screens/movie_detail.dart';
 
 class FavouritePage extends StatelessWidget {
