@@ -1,6 +1,6 @@
 # movie_app
 
-A new Flutter project.
+<img src="https://i.ibb.co/9gMDtjZ/movie.png" alt="movie" border="0">
 
 ## Getting Started
 
