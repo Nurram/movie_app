@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:movie_app/screens/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  await Hive.openBox('favourites');
+
   runApp(const MyApp());
 }
 
@@ -25,11 +31,12 @@ class MyApp extends StatelessWidget {
           .copyWith(primary: Colors.red, secondary: Colors.redAccent[400]),
       scaffoldBackgroundColor: Colors.black87,
       textTheme: const TextTheme(
-        headline5: TextStyle(
-            color: Colors.white, overflow: TextOverflow.ellipsis),
-        headline6: TextStyle(
-            color: Colors.white, overflow: TextOverflow.ellipsis),
-        bodyText1: TextStyle(color: Colors.white, overflow: TextOverflow.ellipsis),
+        headline5:
+            TextStyle(color: Colors.white, overflow: TextOverflow.ellipsis),
+        headline6:
+            TextStyle(color: Colors.white, overflow: TextOverflow.ellipsis),
+        bodyText1:
+            TextStyle(color: Colors.white, overflow: TextOverflow.ellipsis),
       ),
     );
   }

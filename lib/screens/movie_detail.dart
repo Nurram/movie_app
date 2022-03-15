@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:movie_app/utils/api_provider.dart';
 import 'package:movie_app/utils/global_style.dart';
 import 'package:movie_app/widgets/error_text.dart';
 
 import '../models/movie_detail_response.dart';
 
-class MovieDetail extends StatelessWidget {
+class MovieDetail extends StatefulWidget {
   final int movieId;
   final String category;
 
@@ -13,13 +14,18 @@ class MovieDetail extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<MovieDetail> createState() => _MovieDetailState();
+}
+
+class _MovieDetailState extends State<MovieDetail> {
+  @override
   Widget build(BuildContext context) {
     final apiClient = ApiProvider();
 
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder(
-          future: apiClient.getMovieDetail(movieId),
+          future: apiClient.getMovieDetail(widget.movieId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               MovieDetailResponse data = snapshot.data as MovieDetailResponse;
@@ -65,6 +71,11 @@ class MovieDetail extends StatelessWidget {
   }
 
   Padding _buildDetailBody(MovieDetailResponse data, BuildContext context) {
+    final favouritesBox = Hive.box('favourites');
+    final Map<String, dynamic>? savedMovie =
+        favouritesBox.get('${widget.category}${data.id}');
+    bool isFavourite = savedMovie == null ? false : true;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Column(
@@ -82,10 +93,30 @@ class MovieDetail extends StatelessWidget {
                   ),
                   data.voteAverage.toString()),
               const Spacer(),
-              const Icon(
-                Icons.favorite_border,
-                color: Colors.white,
-              ),
+              IconButton(
+                  onPressed: () {
+                    isFavourite
+                        ? {
+                            favouritesBox.delete('${widget.category}${data.id}'),
+                            _showSnackbar(
+                              const Text('Success delete movie!'),
+                            )
+                          }
+                        : {
+                            favouritesBox.put('${widget.category}${data.id}', data.toJson()),
+                            _showSnackbar(
+                              const Text('Success save movie!'),
+                            )
+                          };
+
+                    setState(() {
+                      isFavourite = !isFavourite;
+                    });
+                  },
+                  icon: Icon(
+                    isFavourite ? Icons.favorite : Icons.favorite_border,
+                    color: Colors.white,
+                  )),
               const SizedBox(
                 width: 16,
               ),
@@ -132,6 +163,16 @@ class MovieDetail extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  _showSnackbar(Widget contentToShow) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: contentToShow,
+        duration: const Duration(seconds: 2),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );
   }

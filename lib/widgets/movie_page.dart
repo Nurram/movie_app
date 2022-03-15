@@ -27,8 +27,8 @@ class MoviePage extends StatelessWidget {
           );
         } else {
           MovieResponse upcomingMovie = snapshot.data![0] as MovieResponse;
-          MovieResponse trendingMovie = snapshot.data![1] as MovieResponse;
-          MovieResponse topRatedMovie = snapshot.data![2] as MovieResponse;
+          MovieResponse trendingMovie = snapshot.data![2] as MovieResponse;
+          MovieResponse topRatedMovie = snapshot.data![1] as MovieResponse;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

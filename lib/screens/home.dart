@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/utils/global_style.dart';
+import 'package:movie_app/widgets/favourite_page.dart';
 import 'package:movie_app/widgets/movie_page.dart';
 import 'package:movie_app/widgets/tv_page.dart';
 
@@ -34,12 +35,12 @@ class _HomeState extends State<Home> {
                             : GlobalStyle.whiteTextButtonColor(),
                       ),
                       onPressed: () {
-                        setSelected("tv");
+                        _setSelected("tv");
                       },
                     ),
                     TextButton(
                       onPressed: () {
-                        setSelected("movie");
+                        _setSelected("movie");
                       },
                       child: Text(
                         "Movie",
@@ -50,10 +51,10 @@ class _HomeState extends State<Home> {
                     ),
                     TextButton(
                       onPressed: () {
-                        setSelected("list");
+                        _setSelected("list");
                       },
                       child: Text(
-                        "My List",
+                        "Favourite",
                         style: _selected == "list"
                             ? GlobalStyle.primaryTextButtonColor(context)
                             : GlobalStyle.whiteTextButtonColor(),
@@ -64,7 +65,7 @@ class _HomeState extends State<Home> {
                 const SizedBox(
                   height: 24,
                 ),
-                _selected == 'movie' ? MoviePage() : TvPage()
+                _buildBody()
               ],
             ),
           ),
@@ -73,9 +74,19 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void setSelected(String selected) {
+  void _setSelected(String selected) {
     setState(() {
       _selected = selected;
     });
+  }
+
+  Widget _buildBody() {
+    if (_selected == 'movie') {
+      return MoviePage();
+    } else if (_selected == 'tv') {
+      return TvPage();
+    } else {
+      return FavouritePage();
+    }
   }
 }
