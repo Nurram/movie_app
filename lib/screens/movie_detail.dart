@@ -82,7 +82,7 @@ class _MovieDetailState extends State<MovieDetail> {
 
   Padding _buildDetailBody(MovieDetailResponse data, BuildContext context) {
     final favouritesBox = Hive.box('favourites');
-    final Map<String, dynamic>? savedMovie =
+    final Map<dynamic, dynamic>? savedMovie =
         favouritesBox.get('$_category${data.id}');
     bool isFavourite = savedMovie == null ? false : true;
 

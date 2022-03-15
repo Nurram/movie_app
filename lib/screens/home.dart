@@ -86,7 +86,7 @@ class _HomeState extends State<Home> {
     } else if (_selected == 'tv') {
       return TvPage();
     } else {
-      return FavouritePage();
+      return const FavouritePage();
     }
   }
 }

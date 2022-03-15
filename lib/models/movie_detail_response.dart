@@ -33,7 +33,7 @@ class MovieDetailResponse {
   String title;
   double voteAverage;
 
-  factory MovieDetailResponse.fromJson(Map<String, dynamic> json) =>
+  factory MovieDetailResponse.fromJson(Map<dynamic, dynamic> json) =>
       MovieDetailResponse(
         adult: json["adult"],
         backdropPath: json["backdrop_path"] ?? "",
@@ -41,7 +41,7 @@ class MovieDetailResponse {
         id: json["id"],
         originalLanguage: json["original_language"],
         overview: json["overview"],
-        posterPath: json["poster_path"],
+        posterPath: json["poster_path"] ?? "",
         title: json["title"] ?? json["name"] ?? "",
         voteAverage: json["vote_average"].toDouble(),
       );
@@ -72,7 +72,7 @@ class BelongsToCollection {
   String posterPath;
   String backdropPath;
 
-  factory BelongsToCollection.fromJson(Map<String, dynamic> json) =>
+  factory BelongsToCollection.fromJson(Map<dynamic, dynamic> json) =>
       BelongsToCollection(
         id: json["id"] ?? 0,
         name: json["name"] ?? "",
@@ -97,7 +97,7 @@ class Genre {
   int id;
   String name;
 
-  factory Genre.fromJson(Map<String, dynamic> json) => Genre(
+  factory Genre.fromJson(Map<dynamic, dynamic> json) => Genre(
         id: json["id"],
         name: json["name"],
       );
@@ -121,7 +121,7 @@ class ProductionCompany {
   String name;
   String originCountry;
 
-  factory ProductionCompany.fromJson(Map<String, dynamic> json) =>
+  factory ProductionCompany.fromJson(Map<dynamic, dynamic> json) =>
       ProductionCompany(
         id: json["id"],
         logoPath: json["logo_path"] ?? "",
@@ -146,7 +146,7 @@ class ProductionCountry {
   String iso31661;
   String name;
 
-  factory ProductionCountry.fromJson(Map<String, dynamic> json) =>
+  factory ProductionCountry.fromJson(Map<dynamic, dynamic> json) =>
       ProductionCountry(
         iso31661: json["iso_3166_1"],
         name: json["name"],
@@ -169,7 +169,7 @@ class SpokenLanguage {
   String iso6391;
   String name;
 
-  factory SpokenLanguage.fromJson(Map<String, dynamic> json) => SpokenLanguage(
+  factory SpokenLanguage.fromJson(Map<dynamic, dynamic> json) => SpokenLanguage(
         englishName: json["english_name"],
         iso6391: json["iso_639_1"],
         name: json["name"],
