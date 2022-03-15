@@ -62,7 +62,7 @@ class TvPage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              _buildListView(trendingMovie),
+              _buildListView(context, trendingMovie),
               const SizedBox(
                 height: 16,
               ),
@@ -73,7 +73,7 @@ class TvPage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              _buildListView(topRatedMovie),
+              _buildListView(context, topRatedMovie),
             ],
           );
         }
@@ -128,9 +128,9 @@ class TvPage extends StatelessWidget {
     );
   }
 
-  SizedBox _buildListView(MovieResponse data) {
+  SizedBox _buildListView(BuildContext context, MovieResponse data) {
     return SizedBox(
-      height: 270,
+      height: MediaQuery.of(context).size.height * .33,
       child: ListView.builder(
         itemCount: data.results.length,
         scrollDirection: Axis.horizontal,
@@ -146,8 +146,7 @@ class TvPage extends StatelessWidget {
       child: InkWell(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) =>
-                MovieDetail(category: "tv", movieId: data.id),
+            builder: (context) => MovieDetail(category: "tv", movieId: data.id),
           ),
         ),
         child: Card(
